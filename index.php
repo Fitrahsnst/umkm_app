@@ -20,9 +20,9 @@ if (isset($_GET['logout'])) {
 $queryJenisUsaha = "SELECT DISTINCT jenis_umkm FROM umkm";
 $resultJenisUsaha = mysqli_query($conn, $queryJenisUsaha);
 
-// Mendapatkan daftar tahun berdiri yang tersedia
-$queryTahunBerdiri = "SELECT DISTINCT tahun_berdiri FROM umkm";
-$resultTahunBerdiri = mysqli_query($conn, $queryTahunBerdiri);
+// Mendapatkan daftar keterangan yang tersedia
+$queryKeterangan = "SELECT DISTINCT keterangan FROM umkm";
+$resultKeterangan = mysqli_query($conn, $queryKeterangan);
 
 // Mengatur kolom dan arah sorting default
 $column = isset($_GET['column']) ? $_GET['column'] : 'nib';
@@ -37,10 +37,10 @@ if (!in_array($column, $validColumns)) {
 // Mendapatkan jenis usaha yang dipilih dari parameter URL
 $selectedJenisUsaha = isset($_GET['jenis_usaha']) ? $_GET['jenis_usaha'] : '';
 
-// Mendapatkan tahun berdiri yang dipilih dari parameter URL
-$selectedTahunBerdiri = isset($_GET['tahun_berdiri']) ? $_GET['tahun_berdiri'] : '';
+// Mendapatkan keterangan yang dipilih dari parameter URL
+$selectedKeterangan = isset($_GET['keterangan']) ? $_GET['keterangan'] : '';
 
-// Membuat kondisi tambahan untuk filter berdasarkan jenis usaha dan tahun berdiri
+// Membuat kondisi tambahan untuk filter berdasarkan jenis usaha dan keterangan
 $filterCondition = '';
 $filterParams = array();
 
@@ -49,12 +49,12 @@ if (!empty($selectedJenisUsaha)) {
     $filterParams[] = $selectedJenisUsaha;
 }
 
-if (!empty($selectedTahunBerdiri)) {
+if (!empty($selectedKeterangan)) {
     if (!empty($filterCondition)) {
         $filterCondition .= " AND";
     }
-    $filterCondition .= " tahun_berdiri = ?";
-    $filterParams[] = $selectedTahunBerdiri;
+    $filterCondition .= " keterangan = ?";
+    $filterParams[] = $selectedKeterangan;
 }
 
 // Memodifikasi query untuk memasukkan kondisi filter
@@ -99,11 +99,11 @@ $nextDirection = $direction === 'asc' ? 'desc' : 'asc';
             <?php } ?>
         </select>
         
-        <label for="tahun_berdiri">Filter berdasarkan Tahun Berdiri:</label>
-        <select id="tahun_berdiri" name="tahun_berdiri">
+        <label for="keterangan">Filter berdasarkan Keterangan:</label>
+        <select id="keterangan" name="keterangan">
             <option value="">Semua</option>
-            <?php while ($rowTahunBerdiri = mysqli_fetch_assoc($resultTahunBerdiri)) { ?>
-                <option value="<?php echo $rowTahunBerdiri['tahun_berdiri']; ?>" <?php echo $selectedTahunBerdiri === $rowTahunBerdiri['tahun_berdiri'] ? 'selected' : ''; ?>><?php echo $rowTahunBerdiri['tahun_berdiri']; ?></option>
+            <?php while ($rowKeterangan = mysqli_fetch_assoc($resultKeterangan)) { ?>
+                <option value="<?php echo $rowKeterangan['keterangan']; ?>" <?php echo $selectedKeterangan === $rowKeterangan['keterangan'] ? 'selected' : ''; ?>><?php echo $rowKeterangan['keterangan']; ?></option>
             <?php } ?>
         </select>
         
